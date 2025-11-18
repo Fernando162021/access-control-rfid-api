@@ -22,8 +22,8 @@ This project is a REST API for physical access control using RFID cards, built w
 
 1. **Clone the repository and enter the directory:**
 	```sh
-	git clone <repo-url>
-	cd <repo>
+	git clone git@github.com:Fernando162021/access-control-rfid-api.git
+	cd access-control-rfid-api
 	```
 2. **Install dependencies:**
 	```sh
@@ -33,7 +33,7 @@ This project is a REST API for physical access control using RFID cards, built w
 	- Copy the example and edit your credentials:
 	  ```sh
 	  cp .env.example .env
-	  # Edit DATABASE_URL and JWT_SECRET
+	  # Edit DATABASE_URL, JWT_SECRET and JWT_EXPIRES_IN
 	  ```
 4. **Set up and migrate the database:**
 	```sh
@@ -72,19 +72,15 @@ This project is a REST API for physical access control using RFID cards, built w
 
 MIT License. See [LICENSE](LICENSE) file.
 
-## Badges
-- Node.js, Express, Prisma, PostgreSQL, MIT License
+## TODO
 
-## TODO / Roadmap
-
-- [ ] Implement camera/face recognition access
-- [ ] Add user password reset flow
-- [ ] Improve API documentation (OpenAPI/Swagger)
-- [ ] Add Docker support for easy deployment
-- [ ] Implement logout endpoint
-- [ ] Add password reset flow
-- [ ] Add refresh token support
-- [ ] Token invalidation (blacklist/rotation)
+- Implement camera/face recognition access
+- Improve API documentation (OpenAPI/Swagger)
+- Add Docker support for easy deployment
+- Implement logout endpoint
+- Add password reset flow
+- Add refresh token support
+- Token invalidation (blacklist/rotation)
 
 ## Questions or Contributions?
 Pull requests and issues are welcome.
