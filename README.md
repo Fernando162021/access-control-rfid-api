@@ -68,10 +68,6 @@ This project is a REST API for physical access control using RFID cards, built w
 - `GET /access/logs` — Global access logs (admin only)
 - `GET /access/logs/:userId` — Access logs by user (admin only)
 
-## License
-
-MIT License. See [LICENSE](LICENSE) file.
-
 ## TODO
 
 - Implement camera/face recognition access
