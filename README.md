@@ -17,6 +17,7 @@ This project is a REST API for physical access control using RFID cards, built w
 - Access logs (per user and global)
 - Endpoint protection by JWT and role
 - Automatic admin user seed
+- Email notifications for access attempts (Brevo integration)
 
 ## Setup and Getting Started
 
@@ -30,11 +31,20 @@ This project is a REST API for physical access control using RFID cards, built w
 	npm install
 	```
 3. **Configure the `.env` file:**
-	- Copy the example and edit your credentials:
-	  ```sh
-	  cp .env.example .env
-	  # Edit DATABASE_URL, JWT_SECRET and JWT_EXPIRES_IN
-	  ```
+	 - Copy the example and edit your credentials:
+		 ```sh
+		 cp .env.example .env
+		 # Edit DATABASE_URL, JWT_SECRET, JWT_EXPIRES_IN, BREVO_API_KEY, EMAIL_SENDER_NAME, EMAIL_SENDER, EMAIL_ADMIN
+		 ```
+	 - **Required environment variables:**
+		 - `DATABASE_URL` — PostgreSQL connection string
+		 - `JWT_SECRET` — Secret for JWT signing
+		 - `JWT_EXPIRES_IN` — JWT expiration (e.g. 8h)
+		 - `BREVO_API_KEY` — Brevo (Sendinblue) API key for email notifications
+		 - `EMAIL_SENDER_NAME` — Name for email sender
+		 - `EMAIL_SENDER` — Verified sender email in Brevo
+		 - `EMAIL_ADMIN` — Admin email to receive notifications
+
 4. **Set up and migrate the database:**
 	```sh
 	npx prisma migrate dev --name init
@@ -77,6 +87,14 @@ This project is a REST API for physical access control using RFID cards, built w
 - Add password reset flow
 - Add refresh token support
 - Token invalidation (blacklist/rotation)
+
+## Deployment
+
+This project is ready for deployment on [Vercel](https://vercel.com/):
+
+- Includes a `vercel.json` file to route all API requests to `server.js`.
+- Make sure to set all required environment variables in your Vercel project settings.
+- Recommended: Use a managed PostgreSQL database (e.g., Render, Supabase, Neon).
 
 ## Questions or Contributions?
 Pull requests and issues are welcome.
