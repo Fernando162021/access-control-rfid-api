@@ -30,6 +30,7 @@ const accessByRfidService = async (card) => {
     await createAccessLog(rfidCard.users.id, true, rfidCard.id);
 
     try {
+        console.info('Sending access granted email to admin:', process.env.EMAIL_ADMIN);
         await sendEmail(
             process.env.EMAIL_ADMIN,
             'RFID Access Granted',
