@@ -68,7 +68,7 @@ This project is a REST API for physical access control using RFID cards, built w
 
 ## Main Endpoints
 
--### Auth
+### Auth
 - `POST /auth/login` — Login (returns JWT access and refresh tokens)
 - `POST /auth/register` — Register user (admin only)
 - `POST /auth/refresh-token` — Returns a new access token using a valid refresh token
