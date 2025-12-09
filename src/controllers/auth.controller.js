@@ -1,26 +1,20 @@
 const jwt = require('jsonwebtoken');
-const { UnauthorizedError } = require('../utils/errors');
-const { loginUser, getUserProfile, registerUser } = require('../services/auth.service');
-const { create } = require('domain');
-
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
+const { loginService, registerService, refreshTokenService, logoutService, getProfileService } = require('../services/auth.service');
 
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await loginUser(email, password);
-    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-    res.json({ token });
+    const tokens = await loginService(email, password);
+    res.json(tokens);
   } catch (err) {
-    next(new UnauthorizedError(err.message));
+    next(err);
   }
 };
 
 const register = async (req, res, next) => {
   try {
     const { name, email, password, role, rfidCard } = req.body;
-    const result = await registerUser(name, email, password, role, rfidCard);
+    const result = await registerService(name, email, password, role, rfidCard);
     res.status(201).json({
       status: 'success',
       message: 'User registered successfully',
@@ -37,9 +31,29 @@ const register = async (req, res, next) => {
   }
 };
 
+const refreshToken = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+    const newTokens = await refreshTokenService(token);
+    res.json(newTokens);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const logout = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+    const result = await logoutService(token);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getProfile = async (req, res, next) => {
   try {
-    const user = await getUserProfile(req.user.id);
+    const user = await getProfileService(req.user.id);
     res.json(user);
   } catch (err) {
     next(err);
@@ -48,6 +62,8 @@ const getProfile = async (req, res, next) => {
 
 module.exports = { 
     login, 
-    register, 
+    register,
+    refreshToken,
+    logout,
     getProfile 
 };

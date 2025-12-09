@@ -12,10 +12,13 @@ This project is a REST API for physical access control using RFID cards, built w
 
 ## Main Features
 - User registration and authentication with roles (admin/user)
+- Login and refresh using JWT access and refresh tokens
+- The refresh token only updates the access token; it is not rotated until it expires or is revoked
 - Soft delete for users (`is_active`)
 - Association of RFID cards to users
 - Access logs (per user and global)
 - Endpoint protection by JWT and role
+- Token revocation and session control
 - Automatic admin user seed
 - Email notifications for access attempts (Brevo integration)
 
@@ -38,8 +41,10 @@ This project is a REST API for physical access control using RFID cards, built w
 		 ```
 	 - **Required environment variables:**
 		 - `DATABASE_URL` — PostgreSQL connection string
-		 - `JWT_SECRET` — Secret for JWT signing
-		 - `JWT_EXPIRES_IN` — JWT expiration (e.g. 8h)
+		 - `JWT_SECRET` — Secret for JWT access token signing
+		 - `JWT_REFRESH_SECRET` — Secret for JWT refresh token signing
+		 - `JWT_SECRET_EXPIRES_IN` — Access token expiration (e.g. 1h)
+		 - `JWT_REFRESH_SECRET_EXPIRES_IN` — Refresh token expiration (e.g. 7d)
 		 - `BREVO_API_KEY` — Brevo (Sendinblue) API key for email notifications
 		 - `EMAIL_SENDER_NAME` — Name for email sender
 		 - `EMAIL_SENDER` — Verified sender email in Brevo
@@ -63,9 +68,11 @@ This project is a REST API for physical access control using RFID cards, built w
 
 ## Main Endpoints
 
-### Auth
-- `POST /auth/login` — Login (returns JWT)
+-### Auth
+- `POST /auth/login` — Login (returns JWT access and refresh tokens)
 - `POST /auth/register` — Register user (admin only)
+- `POST /auth/refresh-token` — Returns a new access token using a valid refresh token
+- `POST /auth/logout` — Revokes the current refresh token
 - `GET /auth/me` — Authenticated user profile
 
 ### Users
@@ -81,12 +88,12 @@ This project is a REST API for physical access control using RFID cards, built w
 ## TODO
 
 - Implement camera/face recognition access
-- Improve API documentation (OpenAPI/Swagger)
+- Improve API documentation
 - Add Docker support for easy deployment
-- Implement logout endpoint
-- Add password reset flow
-- Add refresh token support
-- Token invalidation (blacklist/rotation)
+- Implement password reset flow
+- [x] Logout implemented
+- [x] Refresh token implemented
+- [x] Token invalidation/revocation implemented
 
 ## Deployment
 

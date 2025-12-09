@@ -1,9 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const { validateEmail, validateId } = require('../utils/validators');
 
 const getUserById = async (id) => {
-    const validatedId = validateId(id, 'User ID');
     const user = await prisma.users.findUnique({
         where: { id: validatedId },
         select: {
@@ -23,10 +21,8 @@ const getUserById = async (id) => {
 };
 
 const getUserByEmail = async (email) => {
-    const validatedEmail = validateEmail(email);
-
     return await prisma.users.findUnique({
-        where: { email: validatedEmail }
+        where: { email: email }
     });
 };
 
@@ -45,7 +41,6 @@ const getAllUsers = async () => {
 };
 
 const deleteUserById = async (id) => {
-    const validatedId = validateId(id, 'User ID');
     const user = await prisma.users.findUnique({
         where: { id: validatedId }
     });

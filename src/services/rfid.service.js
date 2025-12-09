@@ -1,16 +1,13 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const { validateId } = require('../utils/validators');
 
 const createRfidCard = async (uid, userId) => {
     if (!uid || typeof uid !== 'string' || uid.trim().length === 0) {
         throw new Error('RFID card is required and must be a non-empty string');
     }
 
-    const validatedUserId = validateId(userId, 'User ID');
-
     const user = await prisma.users.findUnique({
-        where: { id: validatedUserId }
+        where: { id: userId }
     });
 
     if (!user) {
@@ -57,10 +54,8 @@ const getRfidCardsByUserId = async (userId) => {
 };
 
 const deleteRfidCard = async (id) => {
-    const validatedId = validateId(id, 'RFID Card ID');
-
     const card = await prisma.rfid_cards.findUnique({
-        where: { id: validatedId }
+        where: { id: id }
     });
 
     if (!card) {
